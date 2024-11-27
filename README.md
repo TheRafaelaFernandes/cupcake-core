@@ -1,0 +1,15 @@
+Critérios de aceite:
+- Permitir que o usuário crie a sua conta;
+- Permitir que o usuário logue no sistema;
+- Permitir ter a opção de super usuário, para que o administrador gerencie os produtos;
+- Permitir que o consumidor veja a listagem de produtos;
+- Permitir que o consumidor adicione um produto a sua lista de favoritos;
+- Permitir que o consumidor adicione um produto ao carrinho;
+- Permitir que o consumidor veja todos os produtos adicionados ao carrinho;
+- Permitir exibir informações sobre o produto, como descrição e valor, as quantidades e o valor total do pedido;
+- Permitir que o consumidor veja os seus pedidos anteriores;
+- Permitir que o consumidor finalize um pedido;
+- Permitir que seja feito logout do sistema;
+- Permitir que o super usuário inclua novos produtos;
+- Permitir que o super usuário defina a descrição e preço de um produto;
+- Permitir que o consumidor visualize uma listagem onde contenha todos os produtos que ele adicionou como favorito;
