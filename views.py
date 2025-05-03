@@ -1,6 +1,9 @@
+import os
+
 from flask import request, jsonify
 from flask.views import MethodView
 from sqlalchemy.exc import IntegrityError
+from werkzeug.utils import secure_filename
 
 from extensions import db
 from models import Cupcake, CupcakeOrder, Order, Customer, FavoriteCupcake
@@ -66,21 +69,27 @@ class FavoriteCupcakeView(BaseView):
         return jsonify({"message": "Adicionado aos favoritos"}), 201
 
 
-class CupcakeView(BaseView):
-    model = Cupcake
-    schema = CupcakeSchema()
-
+class CupcakeView(MethodView):
     def post(self):
-        data = request.get_json()
+        name = request.form.get('name')
+        price = request.form.get('price')
+        image = request.files.get('image')
 
-        try:
-            instance = self.model(**data)
-            db.session.add(instance)
-            db.session.commit()
-            return jsonify(self.schema.dump(instance)), 201
-        except IntegrityError:
-            db.session.rollback()
-            return jsonify({"error": "error"}), 400
+        if not name or not price or not image:
+            return jsonify({'error': 'Campos obrigatórios'}), 400
+
+        filename = secure_filename(image.filename)
+        upload_folder = os.path.join(os.getcwd(), 'uploads')
+        os.makedirs(upload_folder, exist_ok=True)  # 🔥 cria se não existir
+
+        image_path = os.path.join(upload_folder, filename)
+        image.save(image_path)
+
+        new_cupcake = Cupcake(name=name, price=price, image_url=f'/uploads/{filename}')
+        db.session.add(new_cupcake)
+        db.session.commit()
+
+        return jsonify({'message': 'Cupcake criado com sucesso!'}), 201
 
 
 class CustomerView(BaseView):

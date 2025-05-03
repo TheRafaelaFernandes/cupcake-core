@@ -7,6 +7,12 @@ class Customer(db.Model):
     password = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
     superuser = db.Column(db.Boolean, default=False)
+    # Campos de Endereço
+    street = db.Column(db.String(255), nullable=True)
+    number = db.Column(db.String(20), nullable=True)
+    neighborhood = db.Column(db.String(100), nullable=True)
+    city = db.Column(db.String(100), nullable=True)
+    zip_code = db.Column(db.String(10), nullable=True)
 
     def as_dict(self):
         data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -17,6 +23,8 @@ class Cupcake(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
+    image_url = db.Column(db.String(255))
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
 class CupcakeOrder(db.Model):
     id = db.Column(db.Integer, primary_key=True)

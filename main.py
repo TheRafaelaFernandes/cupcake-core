@@ -15,6 +15,7 @@ logging.basicConfig(level=logging.DEBUG)
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    os.makedirs(os.path.join(app.root_path, 'uploads'), exist_ok=True)
 
     # Permitir CORS
     CORS(app, resources={r"/*": {"origins": "*"}})
@@ -45,6 +46,12 @@ def create_app():
     def health_check():
         app.logger.debug("Health check endpoint chamado.")
         return {"status": "healthy"}, 200
+
+    from flask import send_from_directory
+
+    @app.route('/uploads/<filename>')
+    def uploaded_file(filename):
+        return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
 
     return app
 

@@ -23,10 +23,11 @@ bp.add_url_rule("/cupcake_order/<int:id>", view_func=CupcakeOrderView.as_view("c
 
 bp.add_url_rule("/login", view_func=LoginView.as_view("login"), methods=["POST"])
 
+
 @bp.route('/cupcakes', methods=['GET'])
 def get_cupcakes():
     customer_id = request.args.get('customer_id', type=int)
-    cupcakes = Cupcake.query.all()
+    cupcakes = Cupcake.query.filter_by(is_active=True).all()
 
     favorite_cupcakes = []
     if customer_id:
@@ -63,6 +64,23 @@ def get_favorite_cupcake():
 
     return jsonify(favorite_list), 200
 
+
+@bp.route('/cupcakes/inactivate', methods=['POST'])
+def inactivate_cupcake():
+    data = request.get_json()
+    cupcake_id = data.get("cupcake_id")
+
+    if not cupcake_id:
+        return jsonify({"error": "ID do cupcake é obrigatório"}), 400
+
+    cupcake = Cupcake.query.get(cupcake_id)
+    if not cupcake:
+        return jsonify({"error": "Cupcake não encontrado"}), 404
+
+    cupcake.is_active = False
+    db.session.commit()
+
+    return jsonify({"message": "Cupcake inativado com sucesso!"}), 200
 
 
 @bp.route("/", methods=["GET"])

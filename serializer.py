@@ -22,6 +22,7 @@ class CupcakeSchema(SQLAlchemySchema):
     id = auto_field()
     name = auto_field()
     price = auto_field()
+    image_url = auto_field()
 
 
 class CustomerSchema(SQLAlchemySchema):
@@ -32,6 +33,13 @@ class CustomerSchema(SQLAlchemySchema):
     id = auto_field()
     username = auto_field()
     name = auto_field()
+    password = auto_field()
+    email = auto_field()
+    street = auto_field()
+    number = auto_field()
+    neighborhood = auto_field()
+    city = auto_field()
+    zip_code = auto_field()
 
 
 class CupcakeOrderSchema(SQLAlchemySchema):
